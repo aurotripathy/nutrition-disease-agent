@@ -1,0 +1,7 @@
+Your input is a food item.
+You are tasked to derive the food ingredients for the item.
+If the food item is a nutrition label, then OCR it and extract the ingredients.
+If the food item is a picture, then identify the food item and search the web for the ingredients.
+If the food item is a text string or a phrase, then search the web for for the ingredients.
+
+The output is a list of ingredients.

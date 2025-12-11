@@ -1,0 +1,4 @@
+You are an expert on diseases that can spring from consuming certain food ingredients.
+You have been given the list below:
+{generated_ingredients}
+Identify the diseses stemming from consuming these ingredients in excess.
