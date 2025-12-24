@@ -13,8 +13,9 @@ from pydantic import BaseModel, Field
 print(f'adk version: {google.adk.__version__}')
 model="gemini-2.0-flash"
 
-class IngredientList(BaseModel):
+class IngredientsListAndAilment(BaseModel):
     ingredients: list[str] = Field(description="A list of ingredients")
+    ailment: str = Field(description="A disease or ailment that the users is interested in assiciating with the ingredients")
 
 # --- Sub Agent 1: IngredientsGenerator ---
 ingredients_generator_agent = LlmAgent(
@@ -22,8 +23,8 @@ ingredients_generator_agent = LlmAgent(
     model=model,
     instruction=load_instruction_from_file("ingredients_generator_instructions.txt"),
     tools=[google_search],
-    output_schema=IngredientList,
-    output_key="ingredients_list",  # Save result to state
+    output_schema=IngredientsListAndAilment,
+    output_key="ingredients_list_and_ailment",  # Save result to state
 )
 
 # --- Sub Agent 2: DiseaseIdentifier ---
