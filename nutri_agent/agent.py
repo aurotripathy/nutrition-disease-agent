@@ -1,4 +1,5 @@
 """
+https://medium.com/@dharamai2024/structured-outputs-in-google-adk-part-3-of-the-series-80c683dc2d83
 """
 
 from google.adk.agents import SequentialAgent
@@ -6,7 +7,9 @@ from google.adk.agents import SequentialAgent
 from .util import load_instruction_from_file
 from google.adk.tools import google_search
 from google.adk.agents import LlmAgent
-# from google.adk.models import Gemini
+import google.adk
+
+print(f'adk version: {google.adk.__version__}')
 
 model="gemini-2.0-flash"
 
