@@ -7,7 +7,9 @@ import pprint
 import time
 import argparse
 from collections import defaultdict
+import logging
 
+logging.basicConfig(level=logging.DEBUG)
 
 def get_nutriments_from_off(search_term: str) -> dict:
     """
@@ -75,21 +77,25 @@ def group_nutriments(nutriments_dict: dict) -> dict:
         - First level keys are the base nutrient names (before first delimiter)
         - Second level contains only entries with "_value", "_unit", and optionally "_serving"
     """
-    # Step 1: Group entries by base name (before first "-" or "_" delimiter)
-    groups = defaultdict(dict)
+    # Step 1: Group entries by base name (before first "_")
+    # Base name may contain '-' but should be extracted before the first '_'
     
+    groups = defaultdict(dict)
     for key, value in nutriments_dict.items():
-        # Extract the base nutrient name (everything before the first "_" or "-")
         if '_' in key:
+            # Split by '_' first - base name is everything before first '_'
+            # This allows base names like "saturated-fat" to be preserved
             base_name = key.split('_')[0]
-        elif '-' in key:
-            base_name = key.split('-')[0]
         else:
+            # No delimiters, use key as base name
             base_name = key
-        
-        # Store the key-value pair in the appropriate group
+
         groups[base_name][key] = value
     
+    
+    logging.debug(f"Grouped nutriments (by base name): {dict(groups)}")
+
+
     # Step 2 & 3: Filter each group to retain only _value, _unit, and _serving entries
     grouped_result = {}
     
