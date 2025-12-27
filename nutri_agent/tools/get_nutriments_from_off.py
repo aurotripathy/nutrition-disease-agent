@@ -5,6 +5,7 @@
 from openfoodfacts import API, APIVersion, Country, Environment, Flavor
 import pprint   
 import time
+import argparse
 from collections import defaultdict
 
 
@@ -131,8 +132,13 @@ def get_nutriments_from_off_grouped(search_term: str) -> dict:
     return group_nutriments(nutriments)
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Get nutriments from Open Food Facts')
+    parser.add_argument('search_term', type=str, help='Search term for the food product')
+    args = parser.parse_args()
+    
+    search_term = args.search_term
+    
     print("Getting nutriments from Open Food Facts and grouping them:")   
-    search_term = "coffee"
     grouped_nutriments = get_nutriments_from_off_grouped(search_term)
     for nutrient_name, nutrient_data in grouped_nutriments.items():
         print(f"{nutrient_name}: {nutrient_data}\n")
