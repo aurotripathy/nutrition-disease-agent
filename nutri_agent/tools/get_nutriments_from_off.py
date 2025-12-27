@@ -5,6 +5,7 @@
 from openfoodfacts import API, APIVersion, Country, Environment, Flavor
 import pprint   
 import time
+from collections import defaultdict
 
 
 def get_nutriments_from_off(search_term: str) -> dict:
@@ -61,9 +62,82 @@ def get_nutriments_from_off(search_term: str) -> dict:
     return nutriments
 
 
-if __name__ == "__main__":
-    search_term = "potato chips"
+def group_nutriments(nutriments_dict: dict) -> dict:
+    """
+    Groups nutriments dictionary entries into a nested dictionary structure.
+    
+    Args:
+        nutriments_dict: A dictionary of nutriments from Open Food Facts API.
+    
+    Returns:
+        A nested dictionary where:
+        - First level keys are the base nutrient names (before first delimiter)
+        - Second level contains only entries with "_value", "_unit", and optionally "_serving"
+    """
+    # Step 1: Group entries by base name (before first "-" or "_" delimiter)
+    groups = defaultdict(dict)
+    
+    for key, value in nutriments_dict.items():
+        # Extract the base nutrient name (everything before the first "_" or "-")
+        if '_' in key:
+            base_name = key.split('_')[0]
+        elif '-' in key:
+            base_name = key.split('-')[0]
+        else:
+            base_name = key
+        
+        # Store the key-value pair in the appropriate group
+        groups[base_name][key] = value
+    
+    # Step 2 & 3: Filter each group to retain only _value, _unit, and _serving entries
+    grouped_result = {}
+    
+    for base_name, group_items in groups.items():
+        filtered_group = {}
+        
+        # Retain items containing "_value" and strip the base name prefix
+        for key, value in group_items.items():
+            if '_value' in key:
+                # Remove the base_name prefix to get just "value"
+                simplified_key = key.replace(f"{base_name}_", "")
+                filtered_group[simplified_key] = value
+        
+        # Retain items containing "_unit" and strip the base name prefix
+        for key, value in group_items.items():
+            if '_unit' in key:
+                # Remove the base_name prefix to get just "unit"
+                simplified_key = key.replace(f"{base_name}_", "")
+                filtered_group[simplified_key] = value
+        
+        # Retain items ending with "_serving" and strip the base name prefix
+        for key, value in group_items.items():
+            if key.endswith('_serving'):
+                # Remove the base_name prefix to get just "serving"
+                simplified_key = key.replace(f"{base_name}_", "")
+                filtered_group[simplified_key] = value
+        
+        # Only add the group if it has at least one filtered entry
+        if filtered_group:
+            grouped_result[base_name] = filtered_group
+    
+    return grouped_result
+
+def get_nutriments_from_off_grouped(search_term: str) -> dict:
+    """
+    Fetches the nutriments for a given search-term from Open Food Facts
+    using the Open Food Facts API and groups the nutriments.
+    """
     nutriments = get_nutriments_from_off(search_term)
-    print(f"\nSearch term: {search_term}")
-    print("Nutriments:")
-    pprint.pprint(nutriments)
+    return group_nutriments(nutriments)
+
+if __name__ == "__main__":
+    print("Getting nutriments from Open Food Facts and grouping them:")   
+    search_term = "coffee"
+    grouped_nutriments = get_nutriments_from_off_grouped(search_term)
+    for nutrient_name, nutrient_data in grouped_nutriments.items():
+        print(f"{nutrient_name}: {nutrient_data}\n")
+
+    print("Getting nutriments from Open Food Facts flat (un-grouped), one line per nutrient:")
+    nutriments = get_nutriments_from_off(search_term)
+    for nutrient_name, nutrient_data in nutriments.items():
+        print(f"{nutrient_name}: {nutrient_data}")
