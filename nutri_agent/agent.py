@@ -9,19 +9,20 @@ from google.adk.tools import google_search
 from google.adk.agents import LlmAgent
 import google.adk
 from pydantic import BaseModel, Field
-from .tools.get_nutriments_from_off import get_nutriments_from_off
+from typing import Dict
+from .tools.get_nutriments_from_off import get_nutriments_from_off_grouped
 
 from google.adk.tools.google_search_tool import GoogleSearchTool
 
 # Initialize the tool with the bypass parameter set to True
-google_search_tool = GoogleSearchTool(bypass_multi_tools_limit=True)
+google_search_wrapper = GoogleSearchTool(bypass_multi_tools_limit=True)
 
 print(f'adk version: {google.adk.__version__}')
-model="gemini-2.0-flash"
+model="gemini-2.5-flash"
 
 class IngredientsListAndAilment(BaseModel):
-    ingredients: list[str] = Field(description="A list of ingredients")
-    ailment: str = Field(description="A disease or ailment that the users is interested in assiciating with the ingredients")
+    ingredients: Dict[str, str]  = Field(description="A dictionary of ingredients and their quantities")
+    ailment: str = Field(description="Optionally, a disease or ailment that the users is interested in associating with the ingredients")
 
 # --- Sub Agent 1: IngredientsGenerator ---
 ingredients_generator_agent = LlmAgent(
@@ -29,7 +30,7 @@ ingredients_generator_agent = LlmAgent(
     model=model,
     instruction=load_instruction_from_file("ingredients_generator_instructions.txt"),
     # tools=[get_nutriments_from_off, google_search],
-    tools=[get_nutriments_from_off],
+    tools=[get_nutriments_from_off_grouped],
     output_schema=IngredientsListAndAilment,
     output_key="ingredients_list_and_ailment",  # Save result to state
 )
@@ -39,7 +40,7 @@ disease_identifier_agent = LlmAgent(
     name="DiseaseIdentifier",
     model=model,
     instruction=load_instruction_from_file("disease_identifier_instructions.txt"),
-    tools=[google_search_tool, get_nutriments_from_off],
+    tools=[google_search],
 )
 
 
