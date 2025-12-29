@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 def get_nutriments_from_open_food_facts(food_item: str) -> dict:
     """
-        Fetches the nutriments for a given food item from Open Food Facts
+        Fetches the nutriments (ingredients or nutrients) for a given food item from Open Food Facts
         using the Open Food Facts API.
 
         Args:
@@ -35,32 +35,27 @@ def get_nutriments_from_open_food_facts(food_item: str) -> dict:
     start_time = time.time()
     nutriments = {}
     try:
-        # print(f"Searching Open Food Facts for {search_term}")
+        logging.debug(f"Searching Open Food Facts for {food_item}")
         result = api.product.text_search(food_item)
-        
-        # Append the search term to the file name when writing results
-        # file_name = f"api_result_dump_{search_term}.txt"
-        # with open(file_name, "w", encoding="utf-8") as f:
-        #     pprint.pprint(result, stream=f)
         
         # Look in the "result" object for the 'products' list, then print the 'nutriments' for each product if present
         products = result.get('products', [])
         
-        print(f"Looking for nutriments for: {food_item}")
+        logging.debug(f"Looking for nutriments for: {food_item}")
         if products:
             nutriments = products[0].get('nutriments')
             if nutriments is None:
-                print(f"No nutriments found for the product: {food_item}")
+                logging.debug(f"No nutriments found for the product: {food_item}")
             else:
-                print(f"Nutriments found for the product: {food_item}")
+                logging.debug(f"Nutriments found for the product: {food_item}")
         else:
-            print(f"No products found in the search result for: {food_item}")
+            logging.debug(f"No products found in the search result for: {food_item}")
 
     except Exception as e:
-        print(f"Error searching products: {e}")
+        logging.debug(f"Error searching products: {e}")
     finally:
         elapsed = time.time() - start_time
-        print(f"API call took {elapsed:.2f} seconds")
+        logging.debug(f"API call took {elapsed:.2f} seconds")
     
     return nutriments
 
