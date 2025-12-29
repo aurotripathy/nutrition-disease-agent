@@ -11,16 +11,16 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-def get_nutriments_from_open_food_facts(search_term: str) -> dict:
+def get_nutriments_from_open_food_facts(food_item: str) -> dict:
     """
-        Fetches the nutriments for a given search-term from Open Food Facts
+        Fetches the nutriments for a given food item from Open Food Facts
         using the Open Food Facts API.
 
         Args:
-            search_term: A string representing the search term to search for.
+            food_item: A string representing the food item to search for.
 
         Returns:
-            A dictionary of nutriments for the search term, or an empty dictionary if no nutriments are found.
+            A dictionary of nutriments for the food item, or an empty dictionary if no nutriments are found.
         """
     api = API(
         user_agent="MyAwesomeApp/1.0",
@@ -36,7 +36,7 @@ def get_nutriments_from_open_food_facts(search_term: str) -> dict:
     nutriments = {}
     try:
         # print(f"Searching Open Food Facts for {search_term}")
-        result = api.product.text_search(search_term)
+        result = api.product.text_search(food_item)
         
         # Append the search term to the file name when writing results
         # file_name = f"api_result_dump_{search_term}.txt"
@@ -46,15 +46,15 @@ def get_nutriments_from_open_food_facts(search_term: str) -> dict:
         # Look in the "result" object for the 'products' list, then print the 'nutriments' for each product if present
         products = result.get('products', [])
         
-        print(f"Looking for nutriments for: {search_term}")
+        print(f"Looking for nutriments for: {food_item}")
         if products:
             nutriments = products[0].get('nutriments')
             if nutriments is None:
-                print(f"No nutriments found for the product: {search_term}")
+                print(f"No nutriments found for the product: {food_item}")
             else:
-                print(f"Nutriments found for the product: {search_term}")
+                print(f"Nutriments found for the product: {food_item}")
         else:
-            print(f"No products found in the search result for: {search_term}")
+            print(f"No products found in the search result for: {food_item}")
 
     except Exception as e:
         print(f"Error searching products: {e}")
