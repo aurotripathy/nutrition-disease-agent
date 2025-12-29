@@ -21,6 +21,7 @@ print(f'adk version: {google.adk.__version__}')
 model="gemini-2.5-flash"
 
 class IngredientsListAndAilment(BaseModel):
+    food_item: str = Field(description="The food item name")
     ingredients: Dict[str, str]  = Field(description="A dictionary of ingredients and their quantities")
     ailment: str = Field(description="Optionally, a disease or ailment that the users is interested in associating with the ingredients")
 
