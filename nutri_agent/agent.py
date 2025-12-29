@@ -18,7 +18,8 @@ from google.adk.tools.google_search_tool import GoogleSearchTool
 google_search_wrapper = GoogleSearchTool(bypass_multi_tools_limit=True)
 
 print(f'adk version: {google.adk.__version__}')
-model="gemini-2.5-flash"
+model="gemini-2.5-pro"  # was flash
+# model="gemini-2.5-flash"  # was flash
 
 class IngredientsListAndAilment(BaseModel):
     food_item: str = Field(description="The food item name")
