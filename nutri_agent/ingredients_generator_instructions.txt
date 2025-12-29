@@ -17,9 +17,9 @@
 
    **Step 2:**. Next, you are tasked to search for the nutrients that constitute the food item. 
       You MUST use tools in the following order; 
-      First, call the tool 'get_nutriments_from_off_grouped'. This taked the food item as input and returns a dictionary of nutrients.
+      First, call the tool 'get_nutriments_from_off_grouped'. This takes the food item as input and returns a dictionary of nutrients.
       If that does not yield any result, only then use the 'google_search_wrapper' tool to find the nutrition information
-      You MUST use one of the two tools.
+      You MUST use one of the two tools, not both.
    
 **Output**
-     The output is a list of ingredients and the disease name if available in the input.
+     The output is a disctionary of ingredients and the disease name if available in the input.
