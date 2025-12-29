@@ -11,7 +11,7 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-def get_nutriments_from_off(search_term: str) -> dict:
+def get_nutriments_from_open_food_facts(search_term: str) -> dict:
     """
         Fetches the nutriments for a given search-term from Open Food Facts
         using the Open Food Facts API.
@@ -140,7 +140,7 @@ def get_nutriments_from_off_grouped(search_term: str) -> dict:
             A dictionary of nutriments for the search term, or an empty dictionary if no nutriments are found.
         """
 
-    nutriments = get_nutriments_from_off(search_term)
+    nutriments = get_nutriments_from_open_food_facts(search_term)
     return group_nutriments(nutriments)
 
 if __name__ == "__main__":
@@ -157,6 +157,6 @@ if __name__ == "__main__":
         print(f"{nutrient_name}: {nutrient_data}\n")
 
     print("Getting nutriments from Open Food Facts flat (un-grouped), one line per nutrient:")
-    nutriments = get_nutriments_from_off(search_term)
+    nutriments = get_nutriments_from_open_food_facts(search_term)
     for nutrient_name, nutrient_data in nutriments.items():
         print(f"{nutrient_name}: {nutrient_data}")
