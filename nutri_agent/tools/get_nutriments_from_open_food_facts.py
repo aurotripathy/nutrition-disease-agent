@@ -9,7 +9,7 @@ import argparse
 from collections import defaultdict
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 def get_nutriments_from_open_food_facts(food_item: str) -> dict:
     """
@@ -36,14 +36,20 @@ def get_nutriments_from_open_food_facts(food_item: str) -> dict:
     nutriments = {}
     try:
         logging.debug(f"Searching Open Food Facts for {food_item}")
-        result = api.product.text_search(food_item)
+        result = api.product.text_search(food_item)  # returns a dict
+        # if not result:
+        #     logging.debug(f"No result found for {food_item}")
+        #     return {}
+        # logging.debug(f"Result: {result}")
         
         # Look in the "result" object for the 'products' list, then print the 'nutriments' for each product if present
         products = result.get('products', [])
-        
-        logging.debug(f"Looking for nutriments for: {food_item}")
+        # logging.debug(f"Products in the result for: {products}")
+
         if products:
             nutriments = products[0].get('nutriments')
+            logging.debug(f"\n***** Nutriments *****: {nutriments}")
+
             if nutriments is None:
                 logging.debug(f"No nutriments found for the product: {food_item}")
             else:
@@ -145,9 +151,8 @@ if __name__ == "__main__":
     
     search_term = args.search_term
     
-    print("Getting nutriments from Open Food Facts and grouping them:")   
+    print(f"Getting nutriments for {search_term} from Open Food Facts and grouping them:")   
     grouped_nutriments = get_nutriments_from_off_grouped(search_term)
-    print(f'Grouped nutriments type: {type(grouped_nutriments)}')
     for nutrient_name, nutrient_data in grouped_nutriments.items():
         print(f"{nutrient_name}: {nutrient_data}\n")
 
