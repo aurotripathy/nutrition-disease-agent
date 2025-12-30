@@ -9,7 +9,7 @@ from google.adk.tools import google_search
 from google.adk.agents import LlmAgent
 import google.adk
 from pydantic import BaseModel, Field
-from typing import Dict
+from typing import Dict, Any
 from .tools.get_nutriments_from_open_food_facts import get_grouped_nutriments_from_open_food_facts
 import logging
 
@@ -27,7 +27,7 @@ model="gemini-2.5-pro"  # was flash
 
 class IngredientsListAndAilment(BaseModel):
     food_item: str = Field(description="The food item name")
-    ingredients: Dict[str, str]  = Field(description="A dictionary of ingredients and their quantities")
+    ingredients: Dict[str, Dict[str, Any]] = Field(description="A dictionary of ingredients where each ingredient is a dictionary with 'value', 'unit', and optionally 'serving' keys")
     ailment: str = Field(description="Optionally, a disease or ailment that the users is interested in associating with the ingredients")
 
 # --- Sub Agent 1: IngredientsGenerator ---
