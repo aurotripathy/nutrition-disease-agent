@@ -4,14 +4,16 @@ The multi-agent system comprises of a
 - nutrients discovery agent and a
 - disease analysis agent based on the nutrients discovered. 
 
+These two agents collaborate in a sequential manner.
+
 ### Fun Fact
-The nutrient discovery agent uses LLM tool-calling to access the Open Food Facts (OFF) DB with at API.
+The nutrient discovery agent uses LLM tool-calling to access the Open Food Facts (OFF) database with at text-search API.
 
 In some cases, the APU returns a Nova number. The Nova classification is a framework for grouping edible substances based on the extent and purpose of food processing applied to them. Researchers at the University of São Paulo, Brazil, proposed the system in 2009.
 
-Nova classifies food into four groups:
+Nova classifies food into four groups and assigns the number below (1 is healthy, 4 is unhealthy):
 
-- Unprocessed or minimally processed foods
-- Processed culinary ingredients
-- Processed foods
-- Ultra-processed foods[2]
+1. Unprocessed or minimally processed foods
+2. Processed culinary ingredients
+3. Processed foods
+4. Ultra-processed foods
