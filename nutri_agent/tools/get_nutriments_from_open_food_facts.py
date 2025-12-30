@@ -129,19 +129,20 @@ def group_nutriments(nutriments_dict: dict) -> dict:
     
     return grouped_result
 
-def get_nutriments_from_off_grouped(search_term: str) -> dict:
+def get_grouped_nutriments_from_open_food_facts(food_item: str) -> dict:
     """
-        Fetches the nutriments for a given search-term from Open Food Facts
-        using the Open Food Facts API.
+        For the given food item, fetches the nutriments from Open Food Facts
+        using the text-search Open Food Facts API. 
+        Arranges the nutriments into groups by the base name (before the first underscore) and returns a dictionary of these groups.
 
         Args:
-            search_term: A string representing the search term to search for.
+            food_item: A string representing the food item to search for.
 
         Returns:
-            A dictionary of nutriments for the search term, or an empty dictionary if no nutriments are found.
+            A dictionary of nutriments for the food item, or an empty dictionary if no nutriments are found.
         """
 
-    nutriments = get_nutriments_from_open_food_facts(search_term)
+    nutriments = get_nutriments_from_open_food_facts(food_item)
     return group_nutriments(nutriments)
 
 if __name__ == "__main__":
@@ -152,7 +153,7 @@ if __name__ == "__main__":
     search_term = args.search_term
     
     print(f"Getting nutriments for {search_term} from Open Food Facts and grouping them:")   
-    grouped_nutriments = get_nutriments_from_off_grouped(search_term)
+    grouped_nutriments = get_grouped_nutriments_from_open_food_facts(search_term)
     for nutrient_name, nutrient_data in grouped_nutriments.items():
         print(f"{nutrient_name}: {nutrient_data}\n")
 
