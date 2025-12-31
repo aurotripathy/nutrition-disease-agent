@@ -19,3 +19,6 @@ Nova classifies food into four groups and assigns the number below (1 is healthy
 4. Ultra-processed foods
 
 [Demo](https://www.youtube.com/watch?v=XIC1YOyzdLg)
+
+[![Demo](https://img.youtube.com/vi/XIC1YOyzdLg/0.jpg)](www.youtube.com)
+
