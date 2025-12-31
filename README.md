@@ -18,6 +18,6 @@ Nova classifies food into four groups and assigns the number below (1 is healthy
 3. Processed foods
 4. Ultra-processed foods
 
-[![Demo](https://img.youtube.com/vi/XIC1YOyzdLg/0.jpg)](www.youtube.com)
+[![Demo](https://img.youtube.com/vi/XIC1YOyzdLg/0.jpg)](https://www.youtube.com/watch?v=XIC1YOyzdLg)
 
 
