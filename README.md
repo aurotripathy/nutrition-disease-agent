@@ -4,7 +4,7 @@ The multi-agent system comprises a:
 - nutrients discovery agent and a
 - disease analysis agent based on the nutrients discovered. 
 
-These two agents collaborate in a sequential manner.
+These two agents collaborate using the 'sequential' pattern from the ADK.
 
 ### Fun Fact
 The nutrient discovery agent deploys an LLM with tool-calling capabilities to access the Open Food Facts (OFF) database with a text-search API.
